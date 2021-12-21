@@ -1,7 +1,7 @@
 import pygame
 from player import Player
 from obstacle import Obstacle
-
+import random
 
 class Game:
     PLAYER_SPEED = 10
@@ -9,6 +9,8 @@ class Game:
     PLAYER_SIZE = 50
     OBSTACLE_SIZE = 50
     WINDOW_SIZE = (1000, 800)
+    MAX_OBSTACLES = 3
+    OBSTACLE_SPEED_RANGE = (10, 15)
 
     def __init__(self):
         pygame.init()
@@ -17,10 +19,14 @@ class Game:
         self.clock = pygame.time.Clock()
 
         self.player = Player((475, self.WINDOW_SIZE[1] - self.PLAYER_SIZE), self.PLAYER_SIZE, self.display, 0)
-        self.obstacle = Obstacle(self.OBSTACLE_SIZE, self.display, self.OBSTACLE_SPEED)
+        self.obstacles = [self.spawn_obstacle()]
+
+        self.running = True
 
     def run(self):
-        while True:
+
+        while self.running:
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -35,19 +41,30 @@ class Game:
 
             self.display.fill((255, 255, 255))
             player = self.player.draw()
-            self.obstacle.draw()
-
-            self.obstacle.move()
-            self.player.move()
-
-            if self.obstacle.y > self.WINDOW_SIZE[1]:
-                self.obstacle = Obstacle(self.OBSTACLE_SIZE, self.display, self.OBSTACLE_SPEED)
             
-            if self.obstacle.check_collision(player):
-                pygame.quit()
+            for obstacle in self.obstacles:
+                obstacle.draw()
+                obstacle.move()
+
+                if obstacle.check_collision(player):
+                    self.running = False
+
+                if obstacle.y > self.WINDOW_SIZE[1]:
+                    self.obstacles.remove(obstacle)
+
+            if len(self.obstacles) < self.MAX_OBSTACLES:
+                for _ in range(len(self.obstacles), self.MAX_OBSTACLES):
+                    self.obstacles.append(self.spawn_obstacle())
+
+            self.player.move()
 
             pygame.display.flip()
             self.clock.tick(60)
+
+        pygame.quit()
+    
+    def spawn_obstacle(self):
+        return Obstacle(self.OBSTACLE_SIZE, self.display, random.randrange(self.OBSTACLE_SPEED_RANGE[0],self.OBSTACLE_SPEED_RANGE[1]))
 
 game = Game()
 game.run()
