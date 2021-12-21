@@ -1,61 +1,55 @@
 import pygame
-import random
+from player import Player
+from obstacle import Obstacle
 
-pygame.init()
 
-width, height = 1000, 800
+class Game:
+    PLAYER_SPEED = 10
+    OBSTACLE_SPEED = 10
+    PLAYER_SIZE = 50
+    OBSTACLE_SIZE = 50
+    WINDOW_SIZE = (1000, 800)
 
-obstacle_size = 50;
-obstacle_speed = 5;
-player_speed = 0;
+    def __init__(self):
+        pygame.init()
 
-obstacle_x = random.randrange(0, width)
-obstacle_y = -50
+        self.display = pygame.display.set_mode(self.WINDOW_SIZE)
+        self.clock = pygame.time.Clock()
 
-player_x = 475
+        self.player = Player((475, self.WINDOW_SIZE[1] - self.PLAYER_SIZE), self.PLAYER_SIZE, self.display, 0)
+        self.obstacle = Obstacle(self.OBSTACLE_SIZE, self.display, self.OBSTACLE_SPEED)
 
-display = pygame.display.set_mode((width, height))
+    def run(self):
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_a:
+                        self.player.speed = -self.PLAYER_SPEED
+                    if event.key == pygame.K_d:
+                        self.player.speed = self.PLAYER_SPEED
+                if event.type == pygame.KEYUP:
+                    if event.key == pygame.K_a or event.key == pygame.K_d:
+                        self.player.speed = 0
 
-clock = pygame.time.Clock()
+            self.display.fill((255, 255, 255))
+            player = self.player.draw()
+            self.obstacle.draw()
 
-def draw_rect(display, x, y, size, color):
-    return pygame.draw.rect(display, color, [x, y, size, size])
-    
-def check_collision(player_x, player_y, obstacle_x, obstacle_y):
-    return player_y < obstacle_y + obstacle_size and (player_x > obstacle_x and player_x < obstacle_x + obstacle_size or player_x + obstacle_size < obstacle_x and player_x + obstacle_size > obstacle_x + obstacle_size)
-    
+            self.obstacle.move()
+            self.player.move()
 
-while True:
-    
-    
+            if self.obstacle.y > self.WINDOW_SIZE[1]:
+                self.obstacle = Obstacle(self.OBSTACLE_SIZE, self.display, self.OBSTACLE_SPEED)
+            
+            if self.obstacle.check_collision(player):
+                pygame.quit()
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_a:
-                player_speed = -5
-            if event.key == pygame.K_d:
-                player_speed = 5
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_a or event.key == pygame.K_d:
-                player_speed = 0
+            pygame.display.flip()
+            self.clock.tick(60)
 
-    display.fill((255, 255, 255))
-    obstacle = draw_rect(display, obstacle_x, obstacle_y, obstacle_size, (255, 0, 0))
-    player = draw_rect(display, player_x, height - obstacle_size, obstacle_size, (0, 0, 255))
+game = Game()
+game.run()
 
-    obstacle_y += obstacle_speed
-    
-    if player_x + player_speed >= 0 and player_x + player_speed + obstacle_size <= width:
-        player_x += player_speed
 
-    if obstacle_y > height:
-        obstacle_y = -50
-        obstacle_x = random.randrange(0, width)
-    
-    if player.colliderect(obstacle):
-        pygame.quit()
-
-    pygame.display.flip()
-    clock.tick(60)
