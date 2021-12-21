@@ -19,7 +19,11 @@ display = pygame.display.set_mode((width, height))
 clock = pygame.time.Clock()
 
 def draw_rect(display, x, y, size, color):
-    pygame.draw.rect(display, color, [x, y, size, size])
+    return pygame.draw.rect(display, color, [x, y, size, size])
+    
+def check_collision(player_x, player_y, obstacle_x, obstacle_y):
+    return player_y < obstacle_y + obstacle_size and (player_x > obstacle_x and player_x < obstacle_x + obstacle_size or player_x + obstacle_size < obstacle_x and player_x + obstacle_size > obstacle_x + obstacle_size)
+    
 
 while True:
     
@@ -38,8 +42,8 @@ while True:
                 player_speed = 0
 
     display.fill((255, 255, 255))
-    draw_rect(display, obstacle_x, obstacle_y, obstacle_size, (255, 0, 0))
-    draw_rect(display, player_x, height - obstacle_size, obstacle_size, (0, 0, 255))
+    obstacle = draw_rect(display, obstacle_x, obstacle_y, obstacle_size, (255, 0, 0))
+    player = draw_rect(display, player_x, height - obstacle_size, obstacle_size, (0, 0, 255))
 
     obstacle_y += obstacle_speed
     
@@ -50,5 +54,8 @@ while True:
         obstacle_y = -50
         obstacle_x = random.randrange(0, width)
     
+    if player.colliderect(obstacle):
+        pygame.quit()
+
     pygame.display.flip()
     clock.tick(60)
