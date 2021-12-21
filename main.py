@@ -5,9 +5,9 @@ pygame.init()
 
 width, height = 1000, 800
 
-obstacle_size = 50;
-obstacle_speed = 5;
-player_speed = 0;
+obstacle_size = 50
+obstacle_speed = 5
+player_speed = 0
 
 obstacle_x = random.randrange(0, width)
 obstacle_y = -50
@@ -18,17 +18,16 @@ display = pygame.display.set_mode((width, height))
 
 clock = pygame.time.Clock()
 
+
 def draw_rect(display, x, y, size, color):
     return pygame.draw.rect(display, color, [x, y, size, size])
-    
+
+
 def check_collision(player_x, player_y, obstacle_x, obstacle_y):
     return player_y < obstacle_y + obstacle_size and (player_x > obstacle_x and player_x < obstacle_x + obstacle_size or player_x + obstacle_size < obstacle_x and player_x + obstacle_size > obstacle_x + obstacle_size)
     
 
 while True:
-    
-    
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
