@@ -7,15 +7,19 @@ class Player:
         self.size = size
         self.display = display
         self.speed = speed
+        self.image = pygame.transform.scale(pygame.image.load('./assets/rocket.png'), self.size)
 
     def draw(self):
-        return pygame.draw.rect(self.display, colors.BLUE, [self.x, self.y, self.size, self.size])
+        rect = self.image.get_rect()
+        rect.topleft = self.x, self.y
+        self.display.blit(self.image, rect)
+        return rect
 
     def move(self):
         offset = self.speed
         w, _ = self.display.get_size()
         remaining_x_left = self.x
-        remaining_x_right = w - (self.x + self.size)
+        remaining_x_right = w - (self.x + self.size[0])
         if offset < 0:
             if offset > remaining_x_left:
                 offset = -remaining_x_left

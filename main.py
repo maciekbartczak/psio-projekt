@@ -6,8 +6,8 @@ import random
 class Game:
     PLAYER_SPEED = 10
     OBSTACLE_SPEED = 10
-    PLAYER_SIZE = 50
-    OBSTACLE_SIZE = 50
+    PLAYER_SIZE = (50, 100)
+    OBSTACLE_SIZE = 40
     WINDOW_SIZE = (1000, 800)
     MAX_OBSTACLES = 3
     OBSTACLE_SPEED_RANGE = (10, 15)
@@ -18,7 +18,9 @@ class Game:
         self.display = pygame.display.set_mode(self.WINDOW_SIZE)
         self.clock = pygame.time.Clock()
 
-        self.player = Player((475, self.WINDOW_SIZE[1] - self.PLAYER_SIZE), self.PLAYER_SIZE, self.display, 0)
+        self.bg = pygame.image.load('./assets/bg.jpg')
+
+        self.player = Player((475, self.WINDOW_SIZE[1] - self.PLAYER_SIZE[1]), self.PLAYER_SIZE, self.display, 0)
         self.obstacles = [self.spawn_obstacle()]
 
         self.running = True
@@ -39,7 +41,8 @@ class Game:
                     if event.key == pygame.K_a or event.key == pygame.K_d:
                         self.player.speed = 0
 
-            self.display.fill((255, 255, 255))
+            self.display.blit(self.bg, (0, 0))
+
             player = self.player.draw()
             
             for obstacle in self.obstacles:

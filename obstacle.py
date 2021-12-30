@@ -10,9 +10,14 @@ class Obstacle:
         self.display = display
         self.speed = speed
         self.rect = None
+        self.image = pygame.transform.scale(pygame.image.load('./assets/asteroid.png'), (self.size, self.size))
+        self.rect = None
 
     def draw(self):
-        self.rect = pygame.draw.rect(self.display, colors.RED, [self.x, self.y, self.size, self.size])
+        self.rect = self.image.get_rect()
+        self.rect.topleft = self.x, self.y
+        self.display.blit(self.image, self.rect)
+
 
     def move(self):
         self.y += self.speed
