@@ -8,8 +8,8 @@ class Game:
     PLAYER_SIZE = (50, 100)
     OBSTACLE_SIZE = 40
     WINDOW_SIZE = (1000, 800)
-    MAX_OBSTACLES = 3
-    OBSTACLE_SPEED_RANGE = (300, 600)
+    MAX_OBSTACLES = 5
+    OBSTACLE_SPEED_RANGE = (200, 600)
 
     def __init__(self):
         pygame.init()
@@ -52,8 +52,10 @@ class Game:
                 if obstacle.check_collision(player):
                     self.running = False
 
-                if obstacle.y > self.WINDOW_SIZE[1]:
-                    self.obstacles.remove(obstacle)
+                if (obstacle.y > self.WINDOW_SIZE[1] 
+                    or obstacle.x < 0 
+                    or obstacle.x > self.WINDOW_SIZE[0]):
+                        self.obstacles.remove(obstacle)
 
             if len(self.obstacles) < self.MAX_OBSTACLES:
                 for _ in range(len(self.obstacles), self.MAX_OBSTACLES):
