@@ -19,8 +19,8 @@ class Obstacle:
         self.display.blit(self.image, self.rect)
 
 
-    def move(self):
-        self.y += self.speed
+    def move(self, dt):
+        self.y += self.speed * dt
 
     def check_collision(self, player_rect):
         return self.rect.colliderect(player_rect) if self.rect else False

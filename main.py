@@ -4,13 +4,12 @@ from obstacle import Obstacle
 import random
 
 class Game:
-    PLAYER_SPEED = 10
-    OBSTACLE_SPEED = 10
+    PLAYER_SPEED = 750
     PLAYER_SIZE = (50, 100)
     OBSTACLE_SIZE = 40
     WINDOW_SIZE = (1000, 800)
     MAX_OBSTACLES = 3
-    OBSTACLE_SPEED_RANGE = (10, 15)
+    OBSTACLE_SPEED_RANGE = (300, 600)
 
     def __init__(self):
         pygame.init()
@@ -26,6 +25,7 @@ class Game:
         self.running = True
 
     def run(self):
+        dt = 1
 
         while self.running:
 
@@ -47,7 +47,7 @@ class Game:
             
             for obstacle in self.obstacles:
                 obstacle.draw()
-                obstacle.move()
+                obstacle.move(dt)
 
                 if obstacle.check_collision(player):
                     self.running = False
@@ -59,11 +59,12 @@ class Game:
                 for _ in range(len(self.obstacles), self.MAX_OBSTACLES):
                     self.obstacles.append(self.spawn_obstacle())
 
-            self.player.move()
+            self.player.move(dt)
 
             pygame.display.flip()
-            self.clock.tick(60)
-
+            print(dt)
+            dt = self.clock.tick(144) / 1000
+            
         pygame.quit()
     
     def spawn_obstacle(self):

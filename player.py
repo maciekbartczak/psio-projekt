@@ -15,8 +15,8 @@ class Player:
         self.display.blit(self.image, rect)
         return rect
 
-    def move(self):
-        offset = self.speed
+    def move(self, dt):
+        offset = self.speed * dt
         w, _ = self.display.get_size()
         remaining_x_left = self.x
         remaining_x_right = w - (self.x + self.size[0])
