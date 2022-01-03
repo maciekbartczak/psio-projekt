@@ -5,6 +5,7 @@ import random
 import cv2
 from cvzone.HandTrackingModule import HandDetector
 
+
 class Game:
     PLAYER_SPEED = 300
     PLAYER_SIZE = (50, 100)

@@ -1,1 +1,3 @@
 pygame
+cv2
+cvzone
