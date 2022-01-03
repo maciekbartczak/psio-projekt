@@ -2,14 +2,16 @@ import pygame
 from player import Player
 from obstacle import Obstacle
 import random
+import cv2
+from cvzone.HandTrackingModule import HandDetector
 
 class Game:
-    PLAYER_SPEED = 750
+    PLAYER_SPEED = 300
     PLAYER_SIZE = (50, 100)
     OBSTACLE_SIZE = 40
     WINDOW_SIZE = (1000, 800)
-    MAX_OBSTACLES = 5
-    OBSTACLE_SPEED_RANGE = (200, 600)
+    MAX_OBSTACLES = 3
+    OBSTACLE_SPEED_RANGE = (100, 300)
 
     def __init__(self):
         pygame.init()
@@ -27,6 +29,9 @@ class Game:
     def run(self):
         dt = 1
 
+        cap = cv2.VideoCapture(0)
+        detector = HandDetector(detectionCon=0.8, maxHands=2)
+
         while self.running:
 
             for event in pygame.event.get():
@@ -40,6 +45,22 @@ class Game:
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_a or event.key == pygame.K_d:
                         self.player.speed = 0
+
+
+            success, img = cap.read()
+            hands, img = detector.findHands(img)
+
+            if len(hands) == 1:
+                if hands[0]["type"] == "Left":
+                    self.player.speed = -self.PLAYER_SPEED
+                elif hands[0]["type"] == "Right":
+                    self.player.speed = self.PLAYER_SPEED
+            else:
+                self.player.speed = 0
+
+            cv2.imshow("Camera", img)
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
 
             self.display.blit(self.bg, (0, 0))
 
@@ -65,12 +86,13 @@ class Game:
 
             pygame.display.flip()
             print(dt)
-            dt = self.clock.tick(144) / 1000
+            dt = self.clock.tick(60) / 1000
             
         pygame.quit()
     
     def spawn_obstacle(self):
         return Obstacle(self.OBSTACLE_SIZE, self.display, random.randrange(self.OBSTACLE_SPEED_RANGE[0],self.OBSTACLE_SPEED_RANGE[1]))
+
 
 game = Game()
 game.run()
