@@ -1,6 +1,6 @@
 import pygame
-import colors
 import random
+
 
 class Obstacle:
     offset = [1, -1]
@@ -21,11 +21,9 @@ class Obstacle:
         self.rect.topleft = self.x, self.y
         self.display.blit(self.image, self.rect)
 
-
     def move(self, dt):
-      
         self.y += self.speed * dt
-        self.x +=  self.direction * (self.speed // 6) * dt
+        self.x += self.direction * (self.speed // 6) * dt
 
     def check_collision(self, player_rect):
         return self.rect.colliderect(player_rect) if self.rect else False

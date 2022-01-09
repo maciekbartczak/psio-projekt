@@ -1,5 +1,5 @@
 import pygame
-import colors
+
 
 class Player:
     def __init__(self, pos, size, display, speed):
