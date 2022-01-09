@@ -53,6 +53,8 @@ class Game:
                     self.player.x = current_x
 
             cv2.imshow("Camera", img)
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
 
             self.display.blit(self.bg, (0, 0))
 
