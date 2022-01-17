@@ -11,7 +11,6 @@ class Obstacle:
         self.size = size
         self.display = display
         self.speed = speed
-        self.rect = None
         self.image = pygame.transform.scale(pygame.image.load('./assets/asteroid.png'), (self.size, self.size))
         self.rect = None
         self.direction = random.choice(self.offset)
