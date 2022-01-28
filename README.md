@@ -41,9 +41,9 @@ Instalacja wymaganych modułów
     
 ## Demo
 
-https://ibb.co/1qBc01z
+![App Screenshot](https://ibb.co/1qBc01z)
 
-https://ibb.co/kMt7KTX
+![App Screenshot](https://ibb.co/kMt7KTX)
 
-https://ibb.co/xCdqXwf
+![App Screenshot](https://ibb.co/xCdqXwf)
 
