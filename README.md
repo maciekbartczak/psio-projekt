@@ -41,9 +41,8 @@ Instalacja wymaganych modułów
     
 ## Demo
 
-![App Screenshot](https://ibb.co/1qBc01z)
+![Starting screen](https://i.ibb.co/0f1mwqL/1.png)
 
-![App Screenshot](https://ibb.co/kMt7KTX)
+![Gameplay](https://i.ibb.co/TbjkvVJ/2.png)
 
-![App Screenshot](https://ibb.co/xCdqXwf)
-
+![Ending screen](https://i.ibb.co/FnCzqhF/3.png)
